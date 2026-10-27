@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Pixel Fractal Lab — explore the Mandelbrot set through a retro-futuristic mathematical art studio.">
+  <title>PIXEL FRACTAL LAB — Mathematical Art Playground</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="Fractal Explorer home">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>
+          <strong>PIXEL FRACTAL</strong><em>MATHEMATICAL ART LAB</em>
+        </span>
+      </a>
+      <div class="header-meta">
+        <span class="status-dot"></span>
+        <span id="renderStatus">READY</span>
+        <span class="separator">/</span>
+        <span id="resolutionLabel">—</span>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="viewer-panel">
+        <div class="viewer-toolbar">
+          <div>
+            <span class="eyebrow">[ SYSTEM 01 ] / MANDELBROT ENGINE</span>
+            <h1>INFINITE<br><span>PATTERNS_</span></h1>
+          </div>
+          <div class="viewer-actions">
+            <button class="icon-btn" id="resetBtn" title="Reset view" aria-label="Reset view">↺</button>
+            <button class="icon-btn" id="zoomOutBtn" title="Zoom out" aria-label="Zoom out">−</button>
+            <button class="icon-btn" id="zoomInBtn" title="Zoom in" aria-label="Zoom in">+</button>
+          </div>
+        </div>
+
+        <div class="canvas-frame" id="canvasFrame">
+          <canvas id="fractalCanvas" aria-label="Interactive Mandelbrot fractal canvas"></canvas>
+          <div class="canvas-overlay">
+            <div class="coordinate-readout">
+              <span class="readout-label">COMPLEX PLANE</span>
+              <code id="coordReadout">x + yi</code>
+            </div>
+            <div class="zoom-readout">
+              <span class="readout-label">ZOOM</span>
+              <strong id="zoomReadout">1.00×</strong>
+            </div>
+          </div>
+          <div class="render-progress" id="renderProgress"><span></span></div>
+          <div class="drag-hint" id="dragHint">SCROLL TO ZOOM · DRAG TO EXPLORE</div>
+        </div>
+
+        <div class="viewer-footer">
+          <div class="palette-strip" id="paletteStrip" aria-label="Current palette preview">
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <p>Every pixel is a point <strong>c = x + yi</strong> in the complex plane.</p>
+        </div>
+      </section>
+
+      <aside class="control-panel">
+        <section class="control-section">
+          <div class="section-heading">
+            <span class="section-number">01</span>
+            <div><span class="eyebrow">COLOR MODULE</span><h2>Palette Lab</h2></div>
+          </div>
+          <div class="palette-grid" id="paletteGrid">
+            <button class="palette-card active" data-palette="cosmic" style="--swatches:#130b29,#7028b7,#d93dff,#5ee7ff" aria-label="Cosmic Purple">
+              <span class="swatches"></span><strong>Cosmic Purple</strong><small>violet / magenta</small>
+            </button>
+            <button class="palette-card" data-palette="electric" style="--swatches:#041326,#075ee8,#19d5ff,#d7ffff" aria-label="Electric Blue">
+              <span class="swatches"></span><strong>Electric Blue</strong><small>deep / electric</small>
+            </button>
+            <button class="palette-card" data-palette="solar" style="--swatches:#17060a,#a8210a,#ff7a18,#ffe76a" aria-label="Solar Flare">
+              <span class="swatches"></span><strong>Solar Flare</strong><small>ember / gold</small>
+            </button>
+            <button class="palette-card" data-palette="emerald" style="--swatches:#031512,#06745c,#20d88b,#b7ffd9" aria-label="Emerald Abyss">
+              <span class="swatches"></span><strong>Emerald Abyss</strong><small>abyss / mint</small>
+            </button>
+            <button class="palette-card" data-palette="pixel" style="--swatches:#090b0c,#354b1c,#79b52b,#b7ff3c" aria-label="Pixel Lime">
+              <span class="swatches"></span><strong>Pixel Lime</strong><small>terminal / neon</small>
+            </button>
+          </div>
+        </section>
+
+        <section class="control-section">
+          <div class="section-heading compact">
+            <span class="section-number">02</span>
+            <div><span class="eyebrow">ENGINE CONFIG</span><h2>Iterations</h2></div>
+          </div>
+          <label class="range-label" for="iterations">
+            <span>Maximum iterations</span>
+            <output id="iterationValue">240</output>
+          </label>
+          <input id="iterations" type="range" min="60" max="900" step="20" value="240">
+          <div class="range-hints"><span>60 FAST</span><span>900 DETAIL</span></div>
+        </section>
+
+        <section class="control-section">
+          <div class="section-heading compact">
+            <span class="section-number">03</span>
+            <div><span class="eyebrow">LIVE TELEMETRY</span><h2>Coordinates</h2></div>
+          </div>
+          <div class="telemetry">
+            <div><span>REAL</span><code id="realValue">−0.500000</code></div>
+            <div><span>IMAGINARY</span><code id="imagValue">0.000000</code></div>
+            <div><span>SCALE</span><code id="scaleValue">3.200000</code></div>
+          </div>
+        </section>
+
+        <section class="control-section">
+          <div class="section-heading compact">
+            <span class="section-number">04</span>
+            <div><span class="eyebrow">KNOWN REGIONS</span><h2>Landmarks</h2></div>
+          </div>
+          <div class="preset-list" id="presetList"></div>
+        </section>
+
+        <section class="control-section actions">
+          <button class="primary-btn" id="randomizeBtn"><span>✳</span> Randomize</button>
+          <button class="secondary-btn" id="exportBtn"><span>↓</span> Export PNG</button>
+          <button class="secondary-btn share-action" id="shareBtn"><span>↗</span> Copy Share Link</button>
+        </section>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <p><span>zₙ₊₁ = zₙ² + c</span> <span class="muted">/</span> ESCAPE RADIUS &gt; 2</p>
+      <p>PIXEL FRACTAL LAB <span class="muted">/</span> NERDALIF CREATIVE COMPUTING</p>
+    </footer>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
